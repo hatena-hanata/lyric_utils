@@ -9,20 +9,31 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>歌詞取得</title>
   </head>
   <body>
-    <h1>Hello, world!</h1>
+    <h1>歌詞取得</h1>
 
-<form action="/result" method="POST", id="url-form">
-    <div class="form-group">
-        <label for="text1">URL:</label>
-        <input type="text" name="url" id="url" class="form-control">
-      <button type="submit" class="btn btn-primary mb-2">Submit</button>
-    </div>
-</form>
+    <div class="container">
+        <div class="row">
 
-<div id="output"></div>
+          <div class="col-sm">
+            <form action="/result" method="POST", id="url-form">
+                <div class="form-group">
+                    <label for="text1">URL:</label>
+                    <input type="text" name="url" id="url" class="form-control">
+                  <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                </div>
+            </form>
+          </div>
+
+          <div class="col-sm">
+            <div id="output"></div>
+            <button onclick="copyToClipboard()" class="btn btn-danger mb-2">Copy</button>
+          </div>
+        </div>
+      </div>
+
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -46,6 +57,21 @@
       });
     });
   </script>
+    <script>
+    function copyToClipboard() {
+        // コピー対象をJavaScript上で変数として定義する
+        var copyTarget = document.getElementById("output");
+
+        // コピー対象のテキストを選択する
+        copyTarget.select();
+
+        // 選択しているテキストをクリップボードにコピーする
+        document.execCommand("Copy");
+
+        // コピーをお知らせする
+        alert("コピーできました！");
+    }
+</script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
