@@ -7,6 +7,10 @@ app = Flask(__name__)
 def hello():
     return render_template('top.html')
 
+@app.route('/convert')
+def note():
+    return render_template('convert.html')
+
 
 def scraping_utanet(soup):
     kashi_area_str = str(soup.find('div', id='kashi_area'))
@@ -42,7 +46,10 @@ def scraping():
         kashi = scraping_jlyric(soup)
     elif 'utamap' in url:
         kashi = scraping_utamap(soup)
-        print(kashi)
+    # 改行タグを改行に変換
+    kashi = kashi.replace('<br>', '\n')
+    kashi = kashi.replace('</br>', '\n')
+    kashi = kashi.replace('<br/>', '\n')
     return jsonify({'output': kashi})
 
 if __name__ == "__main__":
