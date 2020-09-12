@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block page_title %}歌詞コピー{% endblock %}
+{% block content %}
+
+      <h2 class="pb-2 mt-4 mb-2 border-bottom">歌詞コピー</h2>
+      <h4>URLを入力してください</h4><br>
+        <!--form-->
+        <div class="row">
+          <div class="col-sm">
+            <form action="/result" method="POST", id="url-form">
+                <div class="form-group">
+                    <label for="text1">URL:</label>
+                    <input type="text" name="url" id="url" class="form-control"><br>
+                    <button type="submit" class="btn btn-primary mb-2">Submit!</button>
+                </div>
+            </form>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-sm">
+            <!-- <button onclick="copyToClipboard()" id="copy-button" class="btn btn-danger mb-2" disabled>Copy</button><br> -->
+            <textarea rows="30" class="col-sm form-control input-lg" id="output1"></textarea>
+          </div>
+          <div class="col-sm">
+            <!-- <button onclick="copyToClipboard()" id="copy-button" class="btn btn-danger mb-2" disabled>Copy</button><br> -->
+            <textarea rows="30" class="col-sm form-control input-lg" id="output2"></textarea>
+          </div>
+        </div>
+        <br>
+
+        <script type="text/javascript">
+          $(document).ready(function() {
+            //①formのsubmitボタンをクリック
+            $('#url-form').on('submit',function(event){
+      　　　　　//②Ajax通信
+              event.preventDefault();
+              $.ajax({
+                data : {
+      　　　　　　　//③form内inputの値、リクエスト(POST or GET),リクエスト先のURLを記述
+                  url : $('#url').val(),
+                },
+                type : 'POST',
+                url : '/result'
+              })
+      　　　　　//④formの下に結果を表示
+              .done(function(data){
+                $('#output1').html(data.output);
+                //document.getElementById("copy-button").removeAttribute("disabled");
+              });
+            });
+          });
+        </script>
+        <!-- <script>
+          function copyToClipboard() {
+              // コピー対象をJavaScript上で変数として定義する
+              var copyTarget = document.getElementById("output");
+      
+              // コピー対象のテキストを選択する
+              copyTarget.select();
+      
+              // 選択しているテキストをクリップボードにコピーする
+              document.execCommand("Copy");
+      
+              // コピーをお知らせする
+              alert("コピーできました！");
+          }
+      
+          function flexTextarea(el) {
+            const dummy = el.querySelector('.FlexTextarea__dummy')
+            el.querySelector('.FlexTextarea__textarea').addEventListener('input', e => {
+              dummy.textContent = e.target.value + '\u200b'
+            })
+          }
+          document.querySelectorAll('.FlexTextarea').forEach(flexTextarea);
+        </script> -->
+
+    {% endblock %}
+
+
+
+
+

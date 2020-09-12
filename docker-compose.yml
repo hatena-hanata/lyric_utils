@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./project:/home/project
+      - .:/home/lyric_utils
     tty: true
     environment:
       TZ: Asia/Tokyo

@@ -1,15 +1,5 @@
-from flask import Flask, render_template, Markup, request, jsonify, json
 from bs4 import BeautifulSoup
 import requests
-app = Flask(__name__)
-
-@app.route('/')
-def hello():
-    return render_template('top.html')
-
-@app.route('/convert')
-def note():
-    return render_template('convert.html')
 
 
 def scraping_utanet(soup):
@@ -34,9 +24,7 @@ def scraping_utamap(soup):
     return kashi
 
 
-@app.route('/result', methods=['POST'])
-def scraping():
-    url = request.form['url']
+def scraping(url):
     res = requests.get(url)
     soup = BeautifulSoup(res.content, 'html.parser')
 
@@ -50,7 +38,4 @@ def scraping():
     kashi = kashi.replace('<br>', '\n')
     kashi = kashi.replace('</br>', '\n')
     kashi = kashi.replace('<br/>', '\n')
-    return jsonify({'output': kashi})
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    return kashi
