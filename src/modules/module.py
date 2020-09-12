@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import string
 
 
 def scraping_utanet(soup):
@@ -39,3 +40,27 @@ def scraping(url):
     kashi = kashi.replace('</br>', '\n')
     kashi = kashi.replace('<br/>', '\n')
     return kashi
+
+
+def convert_kashi(kashi):
+    ans = []
+    for line in kashi.split('\n'):
+        if len(line) == 0:
+            ans.append(line)
+        elif line in ['Aメロ', 'Bメロ', 'Cメロ', 'サビ', '大サビ', '落ちサビ', 'アウトロ', '間奏', '1番', '2番', 'intro', 'イントロ']:
+            ans.append(line)
+        else:
+            # 非アスキー文字が含まれたら歌詞
+            # （一行の各文字の集合からアスキー文字+記号の集合を引いた結果が空集合じゃなければ）
+            if set(line) - set(string.printable):
+                ans.append(f'<span class="lylic">{line}</span>')
+            else:
+                ans.append(f'<span class="chord">{line}</span>')
+    ans.insert(0, '<pre class="gakuhu">')
+    ans.insert(0, '<script>var default_key = "0";</script>')
+    ans.insert(0, '<select id="selSpeed" onchange="scrollSpeed(this)"></select>')
+    ans.insert(0, '<select id="selStep" onchange="convert(this);"></select>')
+    ans.append('</pre>')
+    res = '\n'.join(ans)
+    return res
+
